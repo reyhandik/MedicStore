@@ -8,11 +8,15 @@ use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ChatController;
 
 // Public routes
 Route::get('/', [CatalogController::class, 'index'])->name('home')->middleware('web');
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
 Route::get('/catalog/{medicine}', [CatalogController::class, 'show'])->name('catalog.show');
+
+// Chat routes (public)
+Route::post('/api/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
 
 // Cart routes (public, but session-based)
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

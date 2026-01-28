@@ -15,6 +15,16 @@ class Order extends Model
         'total_price',
         'recipe_file',
         'status',
+        'customer_name',
+        'customer_phone',
+        'delivery_address',
+        'delivery_city',
+        'delivery_postal_code',
+        'shipping_method',
+        'shipping_cost',
+        'payment_method',
+        'payment_status',
+        'notes',
     ];
 
     protected function casts(): array

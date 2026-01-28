@@ -42,7 +42,10 @@ class CartController extends Controller
         $medicine = Medicine::find($request->medicine_id);
 
         if (!$medicine || $medicine->stock < $request->qty) {
-            return back()->with('error', 'Insufficient stock available.');
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'Stok tidak mencukupi.'], 422);
+            }
+            return back()->with('error', 'Stok tidak mencukupi.');
         }
 
         $cart = session()->get('cart', []);
@@ -52,7 +55,10 @@ class CartController extends Controller
             // Update quantity if item already in cart
             $newQty = $cart[$medicineId]['qty'] + $request->qty;
             if ($medicine->stock < $newQty) {
-                return back()->with('error', 'Insufficient stock available.');
+                if ($request->wantsJson()) {
+                    return response()->json(['message' => 'Stok tidak mencukupi.'], 422);
+                }
+                return back()->with('error', 'Stok tidak mencukupi.');
             }
             $cart[$medicineId]['qty'] = $newQty;
         } else {
@@ -71,7 +77,11 @@ class CartController extends Controller
 
         session()->put('cart', $cart);
 
-        return back()->with('success', 'Item added to cart.');
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Item berhasil ditambahkan ke keranjang.']);
+        }
+
+        return back()->with('success', 'Item berhasil ditambahkan ke keranjang.');
     }
 
     /**
